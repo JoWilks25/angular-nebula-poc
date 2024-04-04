@@ -7,16 +7,15 @@ import nebula from './utilities/configure';
 @Injectable({
   providedIn: 'root'
 })
-export class NebulaService {
-  tenancy: any = null
-  app: any = null
-  // objects: any[] = []
-
-  constructor(
-  ) {}
+export class QlikService {
+  url: string = '';
+  appId: string = '';
+  webIntegrationId = '';
+  enigmaApp: any = null
+  nebulaApp: any = null
 
   async connectToQlikApp(url: string, appId: string, webIntegrationId: string) {
-    const tenancy = await connect({
+    const enigmaApp = await connect({
       connectionType: AuthType.WebIntegration,
       url,
       appId,
@@ -25,20 +24,20 @@ export class NebulaService {
       // clientId: '<Qlik OAuth client id>',
       webIntegrationId,
     });
-    this.tenancy = this.tenancy
-    const app = nebula(tenancy)
-    this.app = app
-    return app
-    // this.setObject(objectId, cssId)
+    this.enigmaApp = enigmaApp
+    this.nebulaApp = nebula(enigmaApp)
+    return {
+      enigmaApp: this.enigmaApp,
+      nebulaApp: this.nebulaApp,
+    }
   }
 
   async setObject(objectId: string, divId: string): Promise<any> {
-    const object = await this.app?.render({
+    const object = await this.nebulaApp?.render({
       element: document.querySelector('#' + divId),
       id: objectId,
     });
     return object;
-    // this.objects.push(object)
   }
 
 }

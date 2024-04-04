@@ -1,0 +1,4 @@
+.nebula-chart {
+  width: auto;
+  height: 500px; /* Must give explicit height, or will not render */
+}
